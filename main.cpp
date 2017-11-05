@@ -11,6 +11,7 @@ class node
 
 	bool exists(int t_i)
 	{
+		///the node exists in t_i if there is a 0 at location t_i of batch_bitmask
 		return ((batch_bitmask&(1<<t_i)) == 0);
 	}
 	node* other_child(node* A)
@@ -31,7 +32,7 @@ void update_pointers(node* A, int t_i)
 	///note that there is an invariant that at least one child of every node exists.
 
 	///base case, when one of the predecessor or successor of A is the other child of the parent of A
-	if(A->parent->other_child(A)->exists(t_i))
+	if(A->parent->other_child(A) != NULL && A->parent->other_child(A)->exists(t_i))
 	{
 		if(A->parent->other_child(A) == parent->left_child)
 		{
