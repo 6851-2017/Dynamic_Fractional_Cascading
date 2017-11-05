@@ -115,15 +115,11 @@ public:
 	int get_most_significant_bit(int mask)
 	{
 	    ///can be computed in O(1)
-	    int ret = -1;
-	    for(int i = 0;i<K;i++)
+	    if(mask == 0)
         {
-            if((mask&(1<<i))!=0)
-            {
-                ret = i;
-            }
+            return -1;
         }
-        return ret;
+	    return 31-__builtin_clz(mask);///probably 1 operation.
 	}
 	void query(int val, int to_be_queried, int predecessor_result[], int successor_result[])
 	{
@@ -161,7 +157,6 @@ public:
         }
         if(low == high || to_be_queried == 0)
         {
-
             return;
         }
         int mid = (low+high)/2;
