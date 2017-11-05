@@ -83,7 +83,6 @@ public:
 	}
 	void insert(int val, int t_i)
 	{
-	    cout << val <<" "<<low <<" "<< high <<endl;
 	    if(!exists(t_i))
         {
             set_exists(t_i);
@@ -116,7 +115,6 @@ public:
 	int get_most_significant_bit(int mask)
 	{
 	    ///can be computed in O(1)
-	    cout << mask <<endl;
 	    int ret = -1;
 	    for(int i = 0;i<K;i++)
         {
@@ -129,10 +127,12 @@ public:
 	}
 	void query(int val, int to_be_queried, int predecessor_result[], int successor_result[])
 	{
-	    cout << val <<" "<< low << " "<< high <<endl;
 	    int mask = to_be_queried & batch_bitmask;///most important line in the code
-	    cout << "BB : "<< mask <<" "<<batch_bitmask <<" "<< (1<<K)-1<<endl;
 	    ///mask has 1s at locations that don't have a node.
+        if(low == high)
+        {
+            mask = to_be_queried;
+        }
 	    int most_significant_bit = get_most_significant_bit(mask);
 	    while(most_significant_bit != -1)
         {
@@ -154,15 +154,14 @@ public:
             {
                 successor_result[most_significant_bit] = -1;
             }
-            cout << "here: "<< most_significant_bit <<endl;
             mask -= (1<<most_significant_bit);
             assert(mask >=0);
             to_be_queried -= (1<<most_significant_bit);
             most_significant_bit = get_most_significant_bit(mask);
-            cout << "again " <<endl;
         }
         if(low == high || to_be_queried == 0)
         {
+
             return;
         }
         int mid = (low+high)/2;
@@ -342,10 +341,10 @@ public:
 int main()
 {
     int n;
-    cin >> n;
+    cin >> n; ///size of the unierse
     assert(log2(n) < K);
-    node* root = new node(0, n-1, NULL);
     int num_structures = log2(n)+1;
+    node* root = new node(0, (1<<num_structures), NULL);
     while(1)
     {
         int type, to_be_accessed, val;
@@ -371,7 +370,7 @@ int main()
             {
                 if((to_be_accessed&(1<<i))!=0)
                 {
-                    cout << i <<" :: "<< predecessor[i] <<" " << successor[i] <<endl;
+                    cout << (1<<i) <<" :: "<< predecessor[i] <<" " << successor[i] <<endl;
                 }
             }
         }
